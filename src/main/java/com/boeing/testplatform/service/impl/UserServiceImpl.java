@@ -1,6 +1,5 @@
 package com.boeing.testplatform.service.impl;
 
-
 import com.boeing.testplatform.mapper.UserMapper;
 import com.boeing.testplatform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
