@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.ws.ResponseWrapper;
 import java.io.*;
 
@@ -72,8 +73,26 @@ public class UserController {
      */
     @RequestMapping(value = "/api/getZhongLingAxis", method = RequestMethod.POST)
     public @ResponseBody
-    JSONObject getAxis(String encodePhoto) {
-        ImageUtil.Base64ToImage(encodePhoto, "/Users/kiko/ydh/ttt.jpg");
+    JSONObject getAxis(@RequestBody String encodePhoto, HttpServletRequest request) {
+
+        JSONObject jsonPhoto = JSONObject.fromObject(encodePhoto);
+
+        String content = (String)jsonPhoto.get("encodePhoto");
+        logger.info("zhongling photo size: " + content.length());
+        FileWriter imageWriter;
+        try {
+            System.out.println("write:  " + encodePhoto);
+            imageWriter = new FileWriter("/Users/kiko/ydh/image.html");
+            imageWriter.write(encodePhoto);
+            imageWriter.flush();
+            imageWriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        ImageUtil.Base64ToImage(content, "/Users/kiko/ydh/ttt.jpg");
         JSONObject res = new JSONObject();
         JSONArray array = new JSONArray();
 
@@ -101,6 +120,19 @@ public class UserController {
         res.put("list", array);
         logger.info(res);
 
+        /*
+        String path = "//Users//kiko//a.json";
+        FileWriter writer;
+        try {
+            writer = new FileWriter(path, false);
+            writer.write(res.toString());
+            writer.flush();//刷新内存，将内存中的数据立刻写出。
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        logger.info("-------------------finish write a.json--------------------");
+        */
         return res;
 
     }
@@ -130,6 +162,8 @@ public class UserController {
 
         return PostUtil.httpPostRequest(url, jsonto.toString(), false);
 
+
+        //ImageUtil.Base64ToImage(encodePhoto, "/Users/kiko/ydh/ttt.jpg");
         /*
         FileWriter imageWriter;
         try {
@@ -143,6 +177,7 @@ public class UserController {
             e.printStackTrace();
         }
         */
+
 
         /*
         String path = "//Users//kiko//a.json";
@@ -159,5 +194,29 @@ public class UserController {
         */
 
 
+    }
+
+    @RequestMapping(value = "/api/getAxis", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAxis() {
+
+        logger.info("===================begin to get axis===================");
+
+        String path = "//Users//kiko//a.json";
+
+        File file = new File(path);
+        StringBuilder sb = new StringBuilder();
+        String s = "";
+        try {
+            FileReader reader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+
+            while ((s = bufferedReader.readLine()) != null) {
+                sb.append(s);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 }
