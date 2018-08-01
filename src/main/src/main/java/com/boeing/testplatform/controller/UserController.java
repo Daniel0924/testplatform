@@ -78,7 +78,7 @@ public class UserController {
 
         JSONObject jsonPhoto = JSONObject.parseObject(encodePhoto);
 
-        String content = (String)jsonPhoto.get("encodePhoto");
+        String content = (String) jsonPhoto.get("encodePhoto");
 
         logger.info("zhongling photo size: " + content.length());
         FileWriter imageWriter;
@@ -144,10 +144,9 @@ public class UserController {
      */
     @RequestMapping(value = "/api/drawBorder", method = RequestMethod.POST)
     public @ResponseBody
-    JSONObject userLogin(String encodePhoto) {
-        logger.info("===================the photo length is:" + encodePhoto.length() +
-                "===================");
-
+    JSONObject userLogin(String encodePhoto, String userName) {
+        logger.info("===================the photo length is:" + encodePhoto.length() + "===================");
+        logger.info("==================the userName is:" + userName + "==================");
         encodePhoto = encodePhoto.replace(' ', '+');
         logger.info("------------------begin to post photo to ZhongLing----------------");
 
@@ -186,9 +185,7 @@ public class UserController {
     String getAxis() {
 
         logger.info("===================begin to get axis===================");
-
         String path = "//Users//kiko//a.json";
-
         File file = new File(path);
         StringBuilder sb = new StringBuilder();
         String s = "";
