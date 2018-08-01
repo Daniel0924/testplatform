@@ -1,20 +1,21 @@
 package com.boeing.testplatform.controller;
 
-
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.boeing.testplatform.bean.UserLogin;
 import com.boeing.testplatform.service.UserService;
 import com.boeing.testplatform.utils.ImageUtil;
 import com.boeing.testplatform.utils.PostUtil;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.ws.ResponseWrapper;
+
 import java.io.*;
+
 
 /**
  * 调用service的接口，实现相应功能
@@ -75,13 +76,14 @@ public class UserController {
     public @ResponseBody
     JSONObject getAxis(@RequestBody String encodePhoto, HttpServletRequest request) {
 
-        JSONObject jsonPhoto = JSONObject.fromObject(encodePhoto);
+        JSONObject jsonPhoto = JSONObject.parseObject(encodePhoto);
 
         String content = (String)jsonPhoto.get("encodePhoto");
+
         logger.info("zhongling photo size: " + content.length());
         FileWriter imageWriter;
         try {
-            System.out.println("write:  " + encodePhoto);
+
             imageWriter = new FileWriter("/Users/kiko/ydh/image.html");
             imageWriter.write(encodePhoto);
             imageWriter.flush();
@@ -119,20 +121,16 @@ public class UserController {
 
         res.put("list", array);
         logger.info(res);
-
-        /*
         String path = "//Users//kiko//a.json";
         FileWriter writer;
         try {
             writer = new FileWriter(path, false);
             writer.write(res.toString());
-            writer.flush();//刷新内存，将内存中的数据立刻写出。
+            writer.flush();                 //刷新内存，将内存中的数据立刻写出。
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        logger.info("-------------------finish write a.json--------------------");
-        */
         return res;
 
     }
@@ -160,14 +158,19 @@ public class UserController {
 
         logger.info("===================begin to draw border===================");
 
-        JSONObject res = PostUtil.httpPostRequest(url, jsonto.toString(), false);
 
+        return PostUtil.httpPostRequest(url, jsonto.toString(), false);
+
+
+        //return PostUtil.httpPostRequest(url, jsonto.toString(), false);
+
+        /*
         String path = "//Users//kiko//a.json";
         FileWriter writer;
         try {
             writer = new FileWriter(path, false);
             writer.write(res.toString());
-            writer.flush();//刷新内存，将内存中的数据立刻写出。
+            writer.flush();                 //刷新内存，将内存中的数据立刻写出。
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -175,7 +178,7 @@ public class UserController {
         logger.info("-------------------finish write a.json--------------------");
 
         return res;
-
+        */
     }
 
     @RequestMapping(value = "/api/getAxis", method = RequestMethod.GET)

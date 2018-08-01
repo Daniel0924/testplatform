@@ -1,7 +1,7 @@
 package com.boeing.testplatform.utils;
 
 
-import net.sf.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -18,6 +18,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -57,7 +58,8 @@ public class PostUtil {
                     if (noNeedResponse) {
                         return null;
                     }
-                    jsonResult = JSONObject.fromObject(str);
+                    jsonResult = JSONObject.parseObject(str);
+                    //jsonResult = JSONObject.fromObject(str);
                 } catch (Exception var10) {
                     logger.error("post请求提交失败1:" + url, var10);
                 }
@@ -101,14 +103,12 @@ public class PostUtil {
             }
             // 读取返回内容
             resultBuffer = new StringBuffer();
-            int contentLength = Integer.parseInt(con.getHeaderField("Content-Length"));
-            if (contentLength > 0) {
-                br = new BufferedReader(new InputStreamReader(con.getInputStream(), charset));
-                String temp;
-                while ((temp = br.readLine()) != null) {
-                    resultBuffer.append(temp);
-                }
+            br = new BufferedReader(new InputStreamReader(con.getInputStream(), charset));
+            String temp;
+            while ((temp = br.readLine()) != null) {
+                resultBuffer.append(temp);
             }
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -130,6 +130,20 @@ public class PostUtil {
         }
 
         return resultBuffer.toString();
+    }
+
+
+    public static void main(String[] args) {
+        String url = "http://10.112.32.109:8088/api/getZhongLingAxis";
+
+        Map<String, Object> params = new HashMap<>();
+
+        params.put("encodePhoto", "123321123321");
+        String charSet = "utf-8";
+        JSONObject jsonObject = httpPostRequest(url, params.toString(), false);
+
+        System.out.println(jsonObject.toString());
+
     }
 
 
