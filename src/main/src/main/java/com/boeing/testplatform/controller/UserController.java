@@ -160,26 +160,8 @@ public class UserController {
 
         logger.info("===================begin to draw border===================");
 
-        return PostUtil.httpPostRequest(url, jsonto.toString(), false);
+        JSONObject res = PostUtil.httpPostRequest(url, jsonto.toString(), false);
 
-
-        //ImageUtil.Base64ToImage(encodePhoto, "/Users/kiko/ydh/ttt.jpg");
-        /*
-        FileWriter imageWriter;
-        try {
-            System.out.println("write:  " + encodePhoto);
-            imageWriter = new FileWriter("/Users/kiko/ydh/image.html");
-            imageWriter.write(encodePhoto);
-            imageWriter.flush();
-            imageWriter.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
-
-
-        /*
         String path = "//Users//kiko//a.json";
         FileWriter writer;
         try {
@@ -191,8 +173,8 @@ public class UserController {
             e.printStackTrace();
         }
         logger.info("-------------------finish write a.json--------------------");
-        */
 
+        return res;
 
     }
 
