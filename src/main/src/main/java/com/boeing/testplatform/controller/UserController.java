@@ -121,16 +121,6 @@ public class UserController {
 
         res.put("list", array);
         logger.info(res);
-        String path = "//Users//kiko//a.json";
-        FileWriter writer;
-        try {
-            writer = new FileWriter(path, false);
-            writer.write(res.toString());
-            writer.flush();                 //刷新内存，将内存中的数据立刻写出。
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return res;
 
     }
@@ -157,11 +147,22 @@ public class UserController {
 
         logger.info("===================begin to draw border===================");
 
+        JSONObject res = PostUtil.httpPostRequest(url, jsonto.toString(), false);
 
-        return PostUtil.httpPostRequest(url, jsonto.toString(), false);
+
+        String path = "//Users//kiko//a.json";
+        FileWriter writer;
+        try {
+            writer = new FileWriter(path, false);
+            writer.write(res.toString());
+            writer.flush();                 //刷新内存，将内存中的数据立刻写出。
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return res;
 
 
-        //return PostUtil.httpPostRequest(url, jsonto.toString(), false);
 
         /*
         String path = "//Users//kiko//a.json";
