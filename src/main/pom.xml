@@ -109,8 +109,6 @@
 
     <build>
 
-
-
         <finalName>testplatform</finalName>
         <plugins>
             <plugin>
