@@ -6,7 +6,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
@@ -134,15 +134,17 @@ public class PostUtil {
 
 
     public static void main(String[] args) {
-        String url = "http://10.112.32.109:8088/api/getZhongLingAxis";
 
-        Map<String, Object> params = new HashMap<>();
+        JSONObject res = new JSONObject();
+        res.put("encodePhoto", "information from 218");
+        String zhonglingUrl = "http://10.112.38.183:8000";
 
-        params.put("encodePhoto", "123321123321");
-        String charSet = "utf-8";
-        JSONObject jsonObject = httpPostRequest(url, params.toString(), false);
+        String url = "http://10.112.248.148:8080/api/getZhongLingAxis";
+        String url2 = "http://10.112.32.109:8088/api/getZhongLingAxis";
 
-        System.out.println(jsonObject.toString());
+        JSONObject response = PostUtil.httpPostRequest(zhonglingUrl, res.toString(), false);
+        System.out.println(response.toString());
+
 
     }
 

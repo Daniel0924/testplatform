@@ -77,14 +77,13 @@ public class UserController {
     JSONObject getAxis(@RequestBody String encodePhoto, HttpServletRequest request) {
 
         JSONObject jsonPhoto = JSONObject.parseObject(encodePhoto);
-
         String content = (String) jsonPhoto.get("encodePhoto");
 
         logger.info("zhongling photo size: " + content.length());
         FileWriter imageWriter;
         try {
 
-            imageWriter = new FileWriter("/Users/kiko/ydh/image.html");
+            imageWriter = new FileWriter("/Users/kiko/ydh/plane.json");
             imageWriter.write(encodePhoto);
             imageWriter.flush();
             imageWriter.close();
@@ -101,20 +100,20 @@ public class UserController {
         double[] weight = {0.1, 0.15, 0.2};
         double[] pos = {-0.15, -0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2};
         JSONObject json = new JSONObject();
-        json.put("info", " " + Math.random());
+        json.put("score", "0.99999");
         json.put("cenx", "" + pos[(int) (Math.random() * pos.length)]);
         json.put("ceny", "" + pos[(int) (Math.random() * pos.length)]);
         json.put("width", "" + weight[(int) (Math.random() * weight.length)]);
         json.put("height", "" + weight[(int) (Math.random() * weight.length)]);
-        json.put("class", "1");
+        json.put("class", "4");
 
         JSONObject json2 = new JSONObject();
-        json2.put("info", " " + Math.random());
-        json2.put("cenx", "0.1");
-        json2.put("ceny", "0.0");
-        json2.put("width", "0.1");
-        json2.put("height", "0.1");
-        json2.put("class", "3");
+        json2.put("score", "0.96847");
+        json2.put("cenx", "-0.2");
+        json2.put("ceny", "0.4");
+        json2.put("width", "0.2");
+        json2.put("height", "0.2");
+        json2.put("class", "5");
 
         array.add(json);
         array.add(json2);
@@ -134,21 +133,34 @@ public class UserController {
      */
     @RequestMapping(value = "/api/drawBorder", method = RequestMethod.POST)
     public @ResponseBody
-    JSONObject userLogin(String encodePhoto, String userName) {
+    JSONObject userLogin(String encodePhoto) {
         logger.info("===================the photo length is:" + encodePhoto.length() + "===================");
-        logger.info("==================the userName is:" + userName + "==================");
+
         encodePhoto = encodePhoto.replace(' ', '+');
         logger.info("------------------begin to post photo to ZhongLing----------------");
 
         JSONObject jsonto = new JSONObject();
         jsonto.put("encodePhoto", encodePhoto);
 
-        String url = "http://10.112.32.109:8088/api/getZhongLingAxis";
+        //String url = "http://10.112.32.109:8088/api/getZhongLingAxis";
+        String url = "http://10.112.24.79:8000";
+        //String url = "http://10.112.24.79:8088/api/getZhongLingAxis";
+
 
         logger.info("===================begin to draw border===================");
 
-        return PostUtil.httpPostRequest(url, jsonto.toString(), false);
+        JSONObject res = PostUtil.httpPostRequest(url, jsonto.toString(), false);
+        
+        return res;
 
     }
 
+    @RequestMapping(value = "/api/getAxis", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAxis() {
+
+        logger.info("===================begin to get axis@@@@@@@@@@@===================");
+
+        return "";
+    }
 }
